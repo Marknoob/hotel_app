@@ -1,11 +1,24 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hotel_app/firebase_auth/firebase_auth_service.dart';
+import 'package:hotel_app/pages/auth_page.dart';
 import 'package:hotel_app/pages/mainpage.dart';
 import 'package:hotel_app/pages/signuppage.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
+
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  final FirebaseAuthService auth = FirebaseAuthService();
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +69,11 @@ class SignInPage extends StatelessWidget {
                   child: Column(
                     children: [
                       TextField(
+                        controller: emailController,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
-                          hintText: 'Username',
+                          hintText: 'E-mail',
                           hintStyle: const TextStyle(color: Colors.white),
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(color: Colors.white),
@@ -74,6 +88,7 @@ class SignInPage extends StatelessWidget {
                         height: 20,
                       ),
                       TextField(
+                        controller: passwordController,
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -117,19 +132,20 @@ class SignInPage extends StatelessWidget {
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
+                          onPressed: () {
+                            signIn();
+
+                            String email = emailController.text;
+                            String password = passwordController.text;
+                            print("email $email");
+                            print("password $password");
+                          },
                           child: const Text(
                             "Sign In",
                             style: TextStyle(
                               color: Colors.black54,
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const MainPage(),
-                              ),
-                            );
-                          },
                         ),
                       ),
                       const SizedBox(
@@ -172,5 +188,25 @@ class SignInPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void signIn() async {
+    // String username = usernameController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
+    print(email);
+    print(password);
+    User? user = await auth.signInWitEmailAndPassword(email, password);
+
+    if (user != null) {
+      print("User is successfully signIn!");
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const AuthPage(),
+        ),
+      );
+    } else {
+      print("Fail to signin! error");
+    }
   }
 }

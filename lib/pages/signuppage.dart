@@ -1,9 +1,30 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hotel_app/firebase_auth/firebase_auth_service.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final FirebaseAuthService auth = FirebaseAuthService();
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    usernameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +75,7 @@ class SignUpPage extends StatelessWidget {
                   child: Column(
                     children: [
                       TextField(
+                        controller: emailController,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
@@ -72,6 +94,7 @@ class SignUpPage extends StatelessWidget {
                         height: 10,
                       ),
                       TextField(
+                        controller: usernameController,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
@@ -90,6 +113,7 @@ class SignUpPage extends StatelessWidget {
                         height: 10,
                       ),
                       TextField(
+                        controller: passwordController,
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -120,7 +144,8 @@ class SignUpPage extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            // Navigator.pop(context);
+                            signUp();
                           },
                         ),
                       ),
@@ -160,5 +185,20 @@ class SignUpPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void signUp() async {
+    // String username = usernameController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    User? user = await auth.signUpWitEmailAndPassword(email, password);
+
+    if (user != null) {
+      print("User is successfully created!");
+      Navigator.pop(context);
+    } else {
+      print("Fail to signup! error");
+    }
   }
 }

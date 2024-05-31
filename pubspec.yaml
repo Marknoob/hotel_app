@@ -7,6 +7,8 @@ environment:
   sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
+  firebase_auth: ^4.20.0
+  firebase_core: ^2.32.0
   flutter:
     sdk: flutter
 
@@ -18,6 +20,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - lib/assets/intro_image.jpg
-    - lib/assets/signin_image.jpg
-    - lib/assets/applogo.png
+    - lib/assets/
