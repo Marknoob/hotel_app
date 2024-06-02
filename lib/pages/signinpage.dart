@@ -2,9 +2,8 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hotel_app/firebase_auth/firebase_auth_service.dart';
 import 'package:hotel_app/pages/auth_page.dart';
-import 'package:hotel_app/pages/mainpage.dart';
+import 'package:hotel_app/pages/forgotpasswordpage.dart';
 import 'package:hotel_app/pages/signuppage.dart';
 
 class SignInPage extends StatefulWidget {
@@ -15,8 +14,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final FirebaseAuthService auth = FirebaseAuthService();
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -119,7 +116,8 @@ class _SignInPageState extends State<SignInPage> {
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const MainPage(),
+                                  builder: (context) =>
+                                      const ForgotPasswordPage(),
                                 ),
                               );
                             },
@@ -132,14 +130,7 @@ class _SignInPageState extends State<SignInPage> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
-                          onPressed: () {
-                            signIn();
-
-                            String email = emailController.text;
-                            String password = passwordController.text;
-                            print("email $email");
-                            print("password $password");
-                          },
+                          onPressed: signIn,
                           child: const Text(
                             "Sign In",
                             style: TextStyle(
@@ -190,23 +181,67 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  // void signIn() async {
+  //   String email = emailController.text;
+  //   String password = passwordController.text;
+  //   // print(email);
+  //   // print(password);
+  //   try {
+  //     User? user = await auth.signInWitEmailAndPassword(email, password);
+  //     if (user != null) {
+  //       print("User is successfully signIn!");
+  //       Navigator.of(context).push(
+  //         MaterialPageRoute(
+  //           builder: (context) => const AuthPage(),
+  //         ),
+  //       );
+  //     } else {
+  //       print("Fail to signin! error");
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           content: Text(e.toString()),
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
+
   void signIn() async {
-    // String username = usernameController.text;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     String email = emailController.text;
     String password = passwordController.text;
-    print(email);
-    print(password);
-    User? user = await auth.signInWitEmailAndPassword(email, password);
 
-    if (user != null) {
-      print("User is successfully signIn!");
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const AuthPage(),
         ),
       );
-    } else {
-      print("Fail to signin! error");
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            content: Text("Signed In Successfully"),
+          );
+        },
+      );
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(e.message.toString()),
+          );
+        },
+      );
     }
   }
 }

@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hotel_app/firebase_auth/firebase_auth_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -12,8 +11,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final FirebaseAuthService auth = FirebaseAuthService();
-
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -187,18 +184,49 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  // void signUp() async {
+  // String username = usernameController.text;
+  // String email = emailController.text;
+  // String password = passwordController.text;
+
+  // User? user = await auth.signUpWitEmailAndPassword(email, password);
+
+  // if (user != null) {
+  //   print("User is successfully created!");
+  //   Navigator.pop(context);
+  // } else {
+  //   print("Fail to signup! error");
+  // }
+  // }
+
   void signUp() async {
-    // String username = usernameController.text;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     String email = emailController.text;
     String password = passwordController.text;
 
-    User? user = await auth.signUpWitEmailAndPassword(email, password);
-
-    if (user != null) {
-      print("User is successfully created!");
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       Navigator.pop(context);
-    } else {
-      print("Fail to signup! error");
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            content: Text("Account Successfully Registed"),
+          );
+        },
+      );
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(e.message.toString()),
+          );
+        },
+      );
     }
   }
 }
