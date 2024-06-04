@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hotel_app/widgets/discoverypage.dart';
 import 'package:hotel_app/widgets/historypage.dart';
 import 'package:hotel_app/widgets/homepage.dart';
+import 'package:hotel_app/widgets/model.dart';
 import 'package:hotel_app/widgets/profilepage.dart';
 
 class MainPage extends StatefulWidget {
@@ -18,6 +19,7 @@ class _MainPageState extends State<MainPage> {
     const DiscoveryPage(),
     const HistoryPage(),
     const ProfilePage(),
+    const ModelPage(),
   ];
 
   @override
@@ -44,6 +46,10 @@ class _MainPageState extends State<MainPage> {
             BottomNavigationBarItem(
               label: "Profile",
               icon: Icon(Icons.person_2_outlined),
+            ),
+            BottomNavigationBarItem(
+              label: "Model",
+              icon: Icon(Icons.book),
             ),
           ],
           currentIndex: pilihanMenu,
