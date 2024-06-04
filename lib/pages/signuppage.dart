@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,10 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  bool validateEmail = false;
+  bool validatePassword = false;
+  bool validateUsername = false;
 
   @override
   void dispose() {
@@ -85,6 +90,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
+                          errorText:
+                              validateEmail ? "Value Can't Be Empty" : null,
                         ),
                       ),
                       const SizedBox(
@@ -104,6 +111,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
+                          errorText:
+                              validateUsername ? "Value Can't Be Empty" : null,
                         ),
                       ),
                       const SizedBox(
@@ -126,6 +135,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
+                          errorText:
+                              validatePassword ? "Value Can't Be Empty" : null,
                         ),
                       ),
                       const SizedBox(
@@ -142,7 +153,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           onPressed: () {
                             // Navigator.pop(context);
-                            signUp();
+                            setState(() {
+                              validateEmail = emailController.text.isEmpty;
+                              validateUsername =
+                                  usernameController.text.isEmpty;
+                              validatePassword =
+                                  passwordController.text.isEmpty;
+                            });
+                            if (!(validateEmail ||
+                                validatePassword ||
+                                validateUsername)) {
+                              signUp();
+                            }
                           },
                         ),
                       ),
@@ -199,16 +221,29 @@ class _SignUpPageState extends State<SignUpPage> {
   // }
   // }
 
+  Future addUser(String username) async {
+    await FirebaseFirestore.instance.collection('User').add({
+      'username': username,
+    });
+  }
+
   void signUp() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     String email = emailController.text;
     String password = passwordController.text;
 
     try {
+      // Create user
       await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: email.trim(),
+        password: password.trim(),
       );
+
+      // Add user details
+      await FirebaseFirestore.instance.collection('User').add({
+        'username': usernameController.text.trim(),
+      });
+
       Navigator.pop(context);
       showDialog(
         context: context,

@@ -10,7 +10,7 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final emailController = TextEditingController();
-  bool _validate = false;
+  bool validate = false;
 
   @override
   void dispose() {
@@ -70,18 +70,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.7),
                             ),
-                            errorText:
-                                _validate ? "Value Can't Be Empty" : null,
                             focusedBorder: const OutlineInputBorder(),
+                            errorText: validate ? "Value Can't Be Empty" : null,
                           ),
                         ),
                         const SizedBox(height: 20),
                         MaterialButton(
                           onPressed: () {
-                            resetPassword();
                             setState(() {
-                              _validate = emailController.text.isEmpty;
+                              validate = emailController.text.isEmpty;
                             });
+                            if (!validate) {
+                              resetPassword();
+                            }
                           },
                           color: Colors.amber,
                           child: const Text("Reset Password"),

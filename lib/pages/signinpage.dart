@@ -17,6 +17,9 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  bool validateEmail = false;
+  bool validatePassword = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +82,8 @@ class _SignInPageState extends State<SignInPage> {
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
+                          errorText:
+                              validateEmail ? "Value Can't Be Empty" : null,
                         ),
                       ),
                       const SizedBox(
@@ -101,6 +106,8 @@ class _SignInPageState extends State<SignInPage> {
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
+                          errorText:
+                              validatePassword ? "Value Can't Be Empty" : null,
                         ),
                       ),
                       Row(
@@ -130,7 +137,16 @@ class _SignInPageState extends State<SignInPage> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
-                          onPressed: signIn,
+                          onPressed: () {
+                            setState(() {
+                              validateEmail = emailController.text.isEmpty;
+                              validatePassword =
+                                  passwordController.text.isEmpty;
+                            });
+                            if (!(validateEmail || validatePassword)) {
+                              signIn();
+                            }
+                          },
                           child: const Text(
                             "Sign In",
                             style: TextStyle(
@@ -228,8 +244,8 @@ class _SignInPageState extends State<SignInPage> {
       showDialog(
         context: context,
         builder: (context) {
-          return const AlertDialog(
-            content: Text("Signed In Successfully"),
+          return AlertDialog(
+            content: Text("Signed In As $email"),
           );
         },
       );
