@@ -17,9 +17,8 @@ class _ModelPageState extends State<ModelPage> {
         stream: FirebaseFirestore.instance.collection('Hotel').snapshots(),
         builder: (context, snapshot) {
           List<Column> hotelList = [];
-          
+
           if (snapshot.hasData) {
-<<<<<<< Updated upstream
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
@@ -30,15 +29,19 @@ class _ModelPageState extends State<ModelPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(hotel['name']),
-                    Image.network(
-                      hotel['cover'],
+                    CachedNetworkImage(
+                      imageUrl: hotel['cover'],
                       fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
                     ),
                     const Text("Images:"),
                     for (var imageUrl in images)
-                      Image.network(
-                        imageUrl,
+                      CachedNetworkImage(
+                        imageUrl: imageUrl.toString(),
                         fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
                       ),
                     Text(hotel['price'].toString()),
                     Text(hotel['location']),
@@ -46,9 +49,11 @@ class _ModelPageState extends State<ModelPage> {
                     Text(hotel['description']),
                     const Text("Activities:"),
                     for (var activity in activities)
-                      Image.network(
-                        activity["image"].toString(),
+                      CachedNetworkImage(
+                        imageUrl: activity["image"].toString(),
                         fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
                       ),
                     Text(hotel['category']),
                     ElevatedButton(
@@ -62,55 +67,6 @@ class _ModelPageState extends State<ModelPage> {
                 // hotelList.add(hotelwidget);
               },
             );
-=======
-            final hotels = snapshot.data?.docs.reversed.toList();
-            for (var hotel in hotels!) {
-              final hotelwidget = Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(hotel['name']),
-                  CachedNetworkImage(
-                    imageUrl: hotel['cover'],
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                  ),
-                  const Text("Images:"),
-                  CachedNetworkImage(
-                    imageUrl: hotel['images'][0],
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: hotel['images'][1],
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: hotel['images'][2],
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                  ),
-                  Text(hotel['price'].toString()),
-                  Text(hotel['location']),
-                  Text(hotel['rate'].toString()),
-                  Text(hotel['description']),
-                  const Text("Activities:"),
-                  CachedNetworkImage(
-                    imageUrl: hotel['activities'][0]["image"].toString(),
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: hotel['activities'][1]["image"].toString(),
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                  ),
-                  Text(hotel['category']),
-                ],
-              );
-              hotelList.add(hotelwidget);
-            }
->>>>>>> Stashed changes
           }
 
           return Expanded(
