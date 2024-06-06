@@ -3,6 +3,7 @@ import 'package:hotel_app/pages/intropage.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:hotel_app/pages/mainpage.dart';
 import 'firebase_options.dart';
+import 'classes/globalCache.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,14 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
