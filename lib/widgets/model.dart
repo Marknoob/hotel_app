@@ -16,50 +16,50 @@ class _ModelPageState extends State<ModelPage> {
         stream: FirebaseFirestore.instance.collection('Hotel').snapshots(),
         builder: (context, snapshot) {
           List<Column> hotelList = [];
-          // print("AHAI: ${snapshot.data?.docs.reversed.toList()}");
-
+          
           if (snapshot.hasData) {
-            final hotels = snapshot.data?.docs.reversed.toList();
-            for (var hotel in hotels!) {
-              final hotelwidget = Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(hotel['name']),
-                  Image.network(
-                    hotel['cover'],
-                    fit: BoxFit.cover,
-                  ),
-                  const Text("Images:"),
-                  Image.network(
-                    hotel['images'][0],
-                    fit: BoxFit.cover,
-                  ),
-                  Image.network(
-                    hotel['images'][1],
-                    fit: BoxFit.cover,
-                  ),
-                  Image.network(
-                    hotel['images'][2],
-                    fit: BoxFit.cover,
-                  ),
-                  Text(hotel['price'].toString()),
-                  Text(hotel['location']),
-                  Text(hotel['rate'].toString()),
-                  Text(hotel['description']),
-                  const Text("Activities:"),
-                  Image.network(
-                    hotel['activities'][0]["image"].toString(),
-                    fit: BoxFit.cover,
-                  ),
-                  Image.network(
-                    hotel['activities'][1]["image"].toString(),
-                    fit: BoxFit.cover,
-                  ),
-                  Text(hotel['category']),
-                ],
-              );
-              hotelList.add(hotelwidget);
-            }
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                final hotel = snapshot.data!.docs[index];
+                final images = hotel['images'] as List<dynamic>;
+                final activities = hotel['activities'] as List<dynamic>;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(hotel['name']),
+                    Image.network(
+                      hotel['cover'],
+                      fit: BoxFit.cover,
+                    ),
+                    const Text("Images:"),
+                    for (var imageUrl in images)
+                      Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    Text(hotel['price'].toString()),
+                    Text(hotel['location']),
+                    Text(hotel['rate'].toString()),
+                    Text(hotel['description']),
+                    const Text("Activities:"),
+                    for (var activity in activities)
+                      Image.network(
+                        activity["image"].toString(),
+                        fit: BoxFit.cover,
+                      ),
+                    Text(hotel['category']),
+                    ElevatedButton(
+                      onPressed: () {
+                        debugPrint(index.toString());
+                      },
+                      child: const Text("See Detail"),
+                    )
+                  ],
+                );
+                // hotelList.add(hotelwidget);
+              },
+            );
           }
 
           return Expanded(
