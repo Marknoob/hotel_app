@@ -1,6 +1,7 @@
 class Booking {
   String id;
   String idHotel;
+  String idUser;
   String cover;
   String name;
   String location;
@@ -18,6 +19,7 @@ class Booking {
   Booking({
     required this.id,
     required this.idHotel,
+    required this.idUser,
     required this.cover,
     required this.name,
     required this.location,
@@ -36,6 +38,7 @@ class Booking {
   factory Booking.fromJson(Map<String, dynamic> json) => Booking(
         id: json["id"],
         idHotel: json["id_hotel"],
+        idUser: json["id_user"],
         cover: json["cover"],
         name: json["name"],
         location: json["location"],
@@ -54,6 +57,7 @@ class Booking {
   Map<String, dynamic> toJson() => {
         "id": id,
         "id_hotel": idHotel,
+        "id_user": idUser,
         "cover": cover,
         "name": name,
         "location": location,
@@ -73,6 +77,7 @@ class Booking {
 Booking get initBooking => Booking(
       id: '',
       idHotel: '',
+      idUser: '',
       cover: '',
       name: '',
       location: '',
