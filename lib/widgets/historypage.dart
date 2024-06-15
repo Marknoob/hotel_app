@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_app/model/booking.dart';
 import 'package:hotel_app/model/hotel.dart';
+import 'package:hotel_app/pages/bookingdetailpage.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -189,8 +190,17 @@ class _HistoryPageState extends State<HistoryPage> {
                     foregroundColor: Colors.white,
                     backgroundColor: const Color(0xff5b6961),
                   ),
-                  onPressed: () {},
-                  child: const Text("Lihat Detail"),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BookingDetailPage(
+                          booking: booking,
+                          hotel: hotel,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text(" Detail"),
                 ),
               ],
             )
