@@ -15,6 +15,7 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   String currentFilter = "upcoming";
+  bool isLoading = false;
   List<Booking> listBooking = [];
   List<Hotel> listHotel = [];
   @override
@@ -33,29 +34,42 @@ class _HistoryPageState extends State<HistoryPage> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           child: Column(
+            mainAxisSize: MainAxisSize.max,
             children: [
               _buildHeader("upcoming"),
               const SizedBox(height: 8),
-              Expanded(
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: listBooking.length,
-                  itemBuilder: (context, index) {
-                    return _buildCard(
-                      listBooking[index],
-                      listHotel[index],
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(height: 8);
-                  },
-                ),
-              ),
+              isLoading
+                  ? const SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: listBooking.length,
+                        itemBuilder: (context, index) {
+                          return _buildCard(
+                            listBooking[index],
+                            listHotel[index],
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(height: 8);
+                        },
+                      ),
+                    ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, getListBooking);
   }
 
   Widget _buildHeader(String currentBooking) {
@@ -154,9 +168,13 @@ class _HistoryPageState extends State<HistoryPage> {
                     ),
                   ),
                   placeholder: (context, url) => const SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: CircularProgressIndicator()),
+                    width: 100,
+                    height: 100,
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
                 const SizedBox(width: 8),
@@ -217,7 +235,9 @@ class _HistoryPageState extends State<HistoryPage> {
     if (auth.currentUser == null) {
       return;
     }
-
+    setState(() {
+      isLoading = true;
+    });
     await FirebaseFirestore.instance
         .collection("Booking")
         .where('id_user', isEqualTo: auth.currentUser?.uid)
@@ -257,6 +277,7 @@ class _HistoryPageState extends State<HistoryPage> {
         setState(() {
           listHotel = tempHotel;
           listBooking = tempBooking;
+          isLoading = false;
         });
       },
     );

@@ -68,31 +68,33 @@ class BookingDetailPage extends StatelessWidget {
                               const Icon(Icons.error),
                         ),
                         const SizedBox(width: 10),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                hotel.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  hotel.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 4),
-                              Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: [
-                                  _generateStars(hotel.rate),
-                                  const SizedBox(width: 4),
-                                  Text('${hotel.rate}'),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
-                              Text('Location: ${hotel.location}'),
-                            ],
+                                const SizedBox(height: 4),
+                                Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: [
+                                    _generateStars(hotel.rate),
+                                    const SizedBox(width: 4),
+                                    Text('${hotel.rate}'),
+                                  ],
+                                ),
+                                const SizedBox(height: 4),
+                                Text('Location: ${hotel.location}'),
+                              ],
+                            ),
                           ),
                         )
                       ],
