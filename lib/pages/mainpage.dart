@@ -47,10 +47,10 @@ class _MainPageState extends State<MainPage> {
               label: "Profile",
               icon: Icon(Icons.person_2_outlined),
             ),
-            BottomNavigationBarItem(
-              label: "Model",
-              icon: Icon(Icons.book),
-            ),
+            // BottomNavigationBarItem(
+            //   label: "Model",
+            //   icon: Icon(Icons.book),
+            // ),
           ],
           currentIndex: pilihanMenu,
           onTap: (int index) {

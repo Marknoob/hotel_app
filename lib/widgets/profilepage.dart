@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,12 +41,13 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 50.0,
-                    backgroundImage: AssetImage(
-                        'assets/profile.jpg'), // replace with your image path
+                    // backgroundImage: AssetImage(
+                    //   'assets/profile.jpg',
+                    // ), // replace with your image path
                   ),
                   SizedBox(height: 15.0, width: 600.0),
                   Text(
-                    'Curtis Weaver',
+                    'User',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -55,7 +55,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   SizedBox(height: 5.0),
                   Text(
-                    'curtis.weaver@example.com',
+                    'user@example.com',
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 14.0,
@@ -96,8 +96,7 @@ class ProfilePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const HistoryPage()),
+                  MaterialPageRoute(builder: (context) => const HistoryPage()),
                 );
               },
             ),
@@ -133,13 +132,13 @@ class ProfilePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const SignInPage()),
                 );
               },
-              child: const Text('Logout'),
               style: ElevatedButton.styleFrom(
                 // primary: Colors.blueAccent,
                 padding: const EdgeInsets.symmetric(
                     horizontal: 50.0, vertical: 15.0),
                 textStyle: const TextStyle(fontSize: 16.0),
               ),
+              child: const Text('Logout'),
             ),
             const SizedBox(height: 20.0),
           ],

@@ -25,7 +25,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-
         backgroundColor: Color(0xFF96bdc3),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(

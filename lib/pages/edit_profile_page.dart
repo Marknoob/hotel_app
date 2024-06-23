@@ -46,7 +46,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
       User? user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({
           'name': _nameController.text,
           'mobile': _mobileController.text,
           'dob': _dobController.text,
@@ -75,7 +78,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               children: [
                 CircleAvatar(
                   radius: 50.0,
-                  backgroundImage: const AssetImage('assets/profile.jpg'), // Replace with user's profile picture
+                  // backgroundImage: const AssetImage('assets/profile.jpg'), // Replace with user's profile pictureme
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
@@ -136,7 +139,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     );
                     if (pickedDate != null) {
                       setState(() {
-                        _dobController.text = '${pickedDate.toLocal()}'.split(' ')[0];
+                        _dobController.text =
+                            '${pickedDate.toLocal()}'.split(' ')[0];
                       });
                     }
                   },
@@ -184,7 +188,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   child: const Text('Update'),
                   style: ElevatedButton.styleFrom(
                     // primary: Colors.blueAccent,
-                    padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0, vertical: 15.0),
                     textStyle: const TextStyle(fontSize: 16.0),
                   ),
                 ),

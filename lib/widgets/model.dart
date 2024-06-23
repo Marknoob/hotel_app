@@ -10,7 +10,6 @@ class ModelPage extends StatefulWidget {
 }
 
 class _ModelPageState extends State<ModelPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +33,7 @@ class _ModelPageState extends State<ModelPage> {
                       imageUrl: hotel['cover'],
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
+                          const CircularProgressIndicator(),
                     ),
                     const Text("Images:"),
                     for (var imageUrl in images)
@@ -42,7 +41,7 @@ class _ModelPageState extends State<ModelPage> {
                         imageUrl: imageUrl.toString(),
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>
-                            CircularProgressIndicator(),
+                            const CircularProgressIndicator(),
                       ),
                     Text(hotel['price'].toString()),
                     Text(hotel['location']),
@@ -54,7 +53,7 @@ class _ModelPageState extends State<ModelPage> {
                         imageUrl: activity["image"].toString(),
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>
-                            CircularProgressIndicator(),
+                            const CircularProgressIndicator(),
                       ),
                     Text(hotel['category']),
                     ElevatedButton(
