@@ -227,32 +227,76 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  void signUp() async {
+  // void signUp() async {
+  //   final FirebaseAuth _auth = FirebaseAuth.instance;
+  //   String email = emailController.text;
+  //   String password = passwordController.text;
+
+  //   try {
+  //     // Create user
+  //     await _auth.createUserWithEmailAndPassword(
+  //       email: email.trim(),
+  //       password: password.trim(),
+  //     );
+
+  //     // Add user details
+  //     await FirebaseFirestore.instance.collection('User').add({
+  //       'username': usernameController.text.trim(),
+  //     });
+
+  //     Navigator.pop(context);
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return const AlertDialog(
+  //           content: Text("Account Successfully Registed"),
+  //         );
+  //       },
+  //     );
+  //   } on FirebaseAuthException catch (e) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           content: Text(e.message.toString()),
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
+
+  Future<void> signUp() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    String email = emailController.text;
-    String password = passwordController.text;
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String username = usernameController.text.trim();
 
     try {
       // Create user
-      await _auth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
 
-      // Add user details
-      await FirebaseFirestore.instance.collection('User').add({
-        'username': usernameController.text.trim(),
-      });
+      User? user = userCredential.user;
 
-      Navigator.pop(context);
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            content: Text("Account Successfully Registed"),
-          );
-        },
-      );
+      if (user != null) {
+        // Add user details with UID as the document ID
+        await FirebaseFirestore.instance.collection('User').doc(user.uid).set({
+          'username': username,
+          'email': email,
+        });
+
+        Navigator.pop(context);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+              content: Text("Account Successfully Registered"),
+            );
+          },
+        );
+      }
     } on FirebaseAuthException catch (e) {
       showDialog(
         context: context,
