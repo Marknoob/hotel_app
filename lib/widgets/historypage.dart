@@ -126,6 +126,13 @@ class _HistoryPageState extends State<HistoryPage> {
             color: Color(0xfffcc900),
           ),
         );
+      } else if (i - rating <= 0.5) {
+        listStars.add(
+          const Icon(
+            Icons.star_half,
+            color: Color(0xfffcc900),
+          ),
+        );
       } else {
         listStars.add(const Icon(Icons.star_border));
       }
