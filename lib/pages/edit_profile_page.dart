@@ -28,11 +28,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     if (user != null) {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
+          .collection('User')
           .doc(user.uid)
           .get();
 
-      _nameController.text = userDoc['name'];
+      _nameController.text = userDoc['username'];
       _emailController.text = user.email ?? '';
       _mobileController.text = userDoc['mobile'];
       _dobController.text = userDoc['dob'];
@@ -47,10 +47,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
       if (user != null) {
         await FirebaseFirestore.instance
-            .collection('users')
+            .collection('User')
             .doc(user.uid)
             .update({
-          'name': _nameController.text,
+          'username': _nameController.text,
           'mobile': _mobileController.text,
           'dob': _dobController.text,
           'gender': _gender,
@@ -185,13 +185,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: _updateUserData,
+                  child: const Text('Update'),
                   style: ElevatedButton.styleFrom(
                     // primary: Colors.blueAccent,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 50.0, vertical: 15.0),
                     textStyle: const TextStyle(fontSize: 16.0),
                   ),
-                  child: const Text('Update'),
                 ),
               ],
             ),
