@@ -37,9 +37,7 @@ class HotelDetailPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 hotel.location,
                 style: TextStyle(
@@ -49,10 +47,7 @@ class HotelDetailPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-                vertical: 4.0,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: Text(
                 '\$${hotel.price} per night',
                 style: TextStyle(
@@ -62,20 +57,89 @@ class HotelDetailPage extends StatelessWidget {
               ),
             ),
             Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                children: buildStarRating(hotel.rate),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                hotel.description,
-                style: const TextStyle(fontSize: 16),
+                'More Images',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              height: 200,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: hotel.images.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CachedNetworkImage(
+                      imageUrl: hotel.images[index],
+                      width: 200,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Activities',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              height: 250,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: hotel.activities.length,
+                itemBuilder: (context, index) {
+                  final activity = hotel.activities[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl: activity['image'],
+                          width: 200,
+                          height: 150,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          activity['name'],
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Description',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-              ),
-              child: Row(
-                children: buildStarRating(
-                  hotel.rate,
-                ),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              child: Text(
+                hotel.description,
+                style: const TextStyle(fontSize: 16),
               ),
             ),
             const SizedBox(height: 20),
