@@ -113,7 +113,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         },
       );
     } on FirebaseAuthException catch (e) {
-      print("ININERORBRO: $e");
       showDialog(
         context: context,
         builder: (context) {

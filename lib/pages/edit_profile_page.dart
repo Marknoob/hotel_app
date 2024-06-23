@@ -76,7 +76,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 50.0,
                   // backgroundImage: const AssetImage('assets/profile.jpg'), // Replace with user's profile pictureme
                 ),
@@ -185,13 +185,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: _updateUserData,
-                  child: const Text('Update'),
                   style: ElevatedButton.styleFrom(
                     // primary: Colors.blueAccent,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 50.0, vertical: 15.0),
                     textStyle: const TextStyle(fontSize: 16.0),
                   ),
+                  child: const Text('Update'),
                 ),
               ],
             ),
